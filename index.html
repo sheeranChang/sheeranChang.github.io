@@ -63,9 +63,9 @@
 			</ul>
 		</nav>
 		<nav>
-    		总文章数 3
+    		总文章数 4
 		</nav>
-		总字数 <span class="post-count">2.1k</span>
+		总字数 <span class="post-count">2.8k</span>
 		<nav class="header-smart-menu">
     		
     			
@@ -156,6 +156,98 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-匿名内部类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/04/匿名内部类/">java拾遗一一内部类和匿名内部类</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/04/匿名内部类/" class="archive-article-date">
+  	<time datetime="2019-05-04T08:26:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-04</time>
+</a>
+        
+      </header>
+      <div align="center" class="post-count">
+        字数：753字 | 预计阅读时长：2分钟
+      </div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>先说一下<strong>局部内部类</strong>：<br> 我们知道，成员内部类所在的位置和成员变量是一样的，也就是类的成员位置（直接在类里面）<br>而局部内部类他所在的位置是和局部变量是一样的（在方法里面）</p>
+<pre><code>class Outer{
+    public void method(){
+        class Inner{//内部类
+            public void function(){
+                System.out.println(&quot;这是一个内部类&quot;);
+            }
+        }
+        //创建对象使用内部类
+        Inner i = new Inner();
+        i.function();
+    }
+}
+</code></pre><blockquote>
+<p>注意：内部类是方法里面的东西，如果再创建一个方法是没有办法调用method方法里这个类的，出了方法无法再使用，他相当于局部变量，不是成员变量！！！这里如果看不懂请关掉页面</p>
+</blockquote>
+<hr>
+<p>了解了局部内部类，我们再说一下<strong>匿名内部类</strong>：<br> <strong>1.匿名内部类可以看成没有名字的局部内部类</strong><br> <strong>2.也应该定义再方法当中</strong><br><strong>3.必须在定义匿名内部类的时候创建他的对象</strong><br>这一点可以这样理解：请读者先回答我一个问题，如果给你一个类，怎么调用类中的成员？答案是创建对象去调用，如果是静态修饰我们还可以直接通过类名去调用，但是匿名内部类没有名字，所以必须在定义的时候创建它的对象，他没有名字，没有其他办法创建对象<br><strong>4.格式：new 类/接口 (){…};</strong><br>形似创建了类或者接口的对象，实则不是，而是创建了继承这个类的子类对象或者是实现该接口的子类对象，因此大括号里写的是重写父类的抽象方法，或者实现接口的所有方法，子类怎么写他怎么写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">interface Inner &#123;</span><br><span class="line">	public void function();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Outer &#123;</span><br><span class="line">	public void method() &#123;</span><br><span class="line">		new Inner() &#123;//new 接口或者父类</span><br><span class="line">			public void function() &#123;//重写接口中的所有方法</span><br><span class="line">				System.out.println(&quot;function&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>method方法体部分可以当成一个对象去看，调用方法就直接在分号前面，大括号后面，点”.”就可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">new Inner() &#123;//new 接口或者父类</span><br><span class="line">			public void function() &#123;//重写接口中的所有方法</span><br><span class="line">				System.out.println(&quot;function&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;.function();</span><br></pre></td></tr></table></figure>
+<p>看似很怪，习惯就好</p>
+<p><strong>如果要使用很多次</strong>，我们可以用一个同样类型的变量去接收这个对象，然后用这个变量去调用，由于他没有类名，我们可以向上转型，用<strong>父类型或者父接口类型去接收</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interface Inner &#123;</span><br><span class="line">	public void function();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Outer &#123;</span><br><span class="line">	public void method() &#123;</span><br><span class="line">		Inner i = new Inner() &#123;//父类接口类型去接收</span><br><span class="line">			public void function() &#123;</span><br><span class="line">				System.out.println(&quot;function&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">		i.function();</span><br><span class="line">		i.function();//可以重复使用</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>总结：匿名内部类有两种使用方式,一种是用一次直接在后面点，直接就用了，一种是用很多次，用一个变量接收这个对象的引用</strong></p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/04/匿名内部类/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-破" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
